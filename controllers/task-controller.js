@@ -3,7 +3,7 @@ const TaskStore = require("../data/task-store");
 const { BadRequestError, NotFoundError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 
-getTaskById = (req, res, next) => {
+const getTaskById = (req, res, next) => {
   const taskId = req.params.id;
   if (!taskId) {
     throw new BadRequestError("Task ID is required");
@@ -15,11 +15,11 @@ getTaskById = (req, res, next) => {
   res.status(StatusCodes.OK).json({ task });
 };
 
-createTask = (req, res, next) => {
+const createTask = (req, res, next) => {
   const { title, description, priority } = req.body;
 
   const newTask = new Task(
-    TaskStore.getNextId(),
+    TaskStore.getNextAndIncrementId(),
     title,
     description,
     false,
@@ -29,7 +29,7 @@ createTask = (req, res, next) => {
   res.status(StatusCodes.CREATED).json({ task: newTask });
 };
 
-updateTask = (req, res, next) => {
+const updateTask = (req, res, next) => {
   const taskId = req.params.id;
   const { title, description, completed, taskPriority } = req.body;
 
@@ -44,7 +44,7 @@ updateTask = (req, res, next) => {
   res.status(StatusCodes.OK).json({ task });
 };
 
-getAllTasks = (req, res) => {
+const getAllTasks = (req, res) => {
   const { priority, sort } = req.query;
 
   let tasks = [...TaskStore.tasks];
@@ -64,7 +64,7 @@ getAllTasks = (req, res) => {
   res.status(StatusCodes.OK).json({ tasks });
 };
 
-deleteTask = (req, res, next) => {
+const deleteTask = (req, res, next) => {
   const taskId = req.params.id;
 
   const taskIndex = TaskStore.tasks.findIndex((t) => t.id === parseInt(taskId));
@@ -80,4 +80,5 @@ module.exports = {
   createTask,
   updateTask,
   getAllTasks,
+  deleteTask,
 };

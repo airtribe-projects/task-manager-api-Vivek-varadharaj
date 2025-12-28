@@ -1,4 +1,5 @@
 const { BadRequestError } = require("../errors");
+const TASK_PRIORITY = require("../constants/task-priority");
 
 const validateCreateTask = (req, res, next) => {
   const { title, description, completed } = req.body || {};
@@ -71,8 +72,26 @@ const validateUpdateTask = (req, res, next) => {
   next();
 };
 
+const validatePriorityQuery = (req, res, next) => {
+  const { priority } = req.query;
+
+  if (
+    priority !== undefined &&
+    !Object.values(TASK_PRIORITY).includes(priority)
+  ) {
+    throw new BadRequestError(
+      `Priority must be one of: ${Object.values(TASK_PRIORITY).join(", ")}`
+    );
+  }
+
+  next();
+};
+
+module.exports = validatePriorityQuery;
+
 module.exports = {
   validateCreateTask,
   validateTaskIdParam,
   validateUpdateTask,
+  validatePriorityQuery,
 };

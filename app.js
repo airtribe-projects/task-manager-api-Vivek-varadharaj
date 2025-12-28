@@ -3,7 +3,7 @@ const app = express();
 const port = 9000;
 
 // middlewares
-const errorHandlerMiddleware = require("./middlewares/error-hanlder");
+const errorHandlerMiddleware = require("./middlewares/error-handler");
 
 // routes
 const taskRoutes = require("./routes/task-route");

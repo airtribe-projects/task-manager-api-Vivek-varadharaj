@@ -1,9 +1,9 @@
-let tasks = [];
+const tasks = [];
 let nextId = 1;
 
 module.exports = {
   tasks,
-  getNextId() {
+  getNextAndIncrementId() {
     return nextId++;
   },
 };
